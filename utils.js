@@ -11,7 +11,7 @@ exports.downloadImage = async (url) => {
 }
 
 exports.getObjectFromS3 = async (key) => {
-    const image = await s3.getObject({ Bucket: 'swiggy-images', Key: key }).promise();
+    const image = await s3.getObject({ Bucket: 'zen-store', Key: key }).promise();
     return image;
 }
 

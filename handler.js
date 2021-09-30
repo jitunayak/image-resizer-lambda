@@ -1,7 +1,7 @@
 'use strict';
 
 const { downloadImage, resizeImage, saveToS3, getObjectFromS3 } = require("./utils");
-const bucket = 'swiggy-images'
+const bucket = 'zen-store'
 exports.hello = async (event) => {
   const imageUrlFromS3 = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
 

@@ -11,13 +11,13 @@ provider:
     - Effect: Allow
       Action:
         - s3:ListBucket
-      Resource: "arn:aws:s3:::swiggy-images"
+      Resource: "arn:aws:s3:::zen-store"
     - Effect: Allow
       Action:
         - s3:PutObject
         - s3:GetObject
         - s3:DeleteObject
-      Resource: "arn:aws:s3:::swiggy-images/*"
+      Resource: "arn:aws:s3:::zen-store/*"
 
 functions:
   hello:
@@ -27,10 +27,9 @@ functions:
           path: /save
           method: get
       - s3:
-          bucket: swiggy-images
+          bucket: zen-store
           event: s3:ObjectCreated:*
           rules:
-            - prefix: uploads/
             - suffix: .jpg
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic

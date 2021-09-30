@@ -32,6 +32,7 @@ functions:
           bucket: ${self:custom.Bucket.name}
           event: s3:ObjectCreated:*
           rules:
+            - preffix: uploaded
             - suffix: .jpg
 
 custom:

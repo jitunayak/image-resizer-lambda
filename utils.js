@@ -26,7 +26,7 @@ exports.saveToS3 = async (bucket, image) => {
     const key = 'lambda-generated-' + new Date().toISOString() + '.' + contentType.ext;
     const params = {
         Bucket: bucket,
-        Key: key,
+        Key: 'processed/' + key,
         Body: image,
         ContentEncoding: 'base64',
         ContentType: contentType.mime

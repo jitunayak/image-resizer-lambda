@@ -1,30 +1,29 @@
 const { default: axios } = require("axios")
-const GM = require('gm')
-const gm = GM.subClass({ imageMagick: true })
 const FileType = require("file-type")
 const AWS = require('aws-sdk')
+const sharp = require("sharp")
 const s3 = new AWS.S3()
-
+const bucketName = process.env.BUCKET_NAME
 exports.downloadImage = async (url) => {
     const res = await axios.get(url, { responseType: 'arraybuffer' })
     return Buffer.from(res.data, 'binary')
 }
 
 exports.getObjectFromS3 = async (key) => {
-    const image = await s3.getObject({ Bucket: 'zen-store', Key: key }).promise();
+    const image = await s3.getObject({ Bucket: bucketName, Key: key }).promise();
     return image;
 }
 
 exports.resizeImage = async (buff, width, height) => {
-    return new Promise((resolve, reject) => {
-        gm(buff).resize(width, height).noProfile()
-            .toBuffer((err, buff) => err ? reject(err) : resolve(buff))
-    })
+    const key = 'lambda-' + new Date().toISOString() + ".jpg"
+    const resizedImage = await sharp(buff.Body).resize(300, 300).toBuffer().catch(err => console.error(err));
+    return resizedImage
+
 }
 
-exports.saveToS3 = async (bucket, key, image) => {
+exports.saveToS3 = async (bucket, image) => {
     const contentType = await FileType.fromBuffer(image);
-    key = key + '.' + contentType.ext;
+    const key = 'lambda-generated-' + new Date().toISOString() + '.' + contentType.ext;
     const params = {
         Bucket: bucket,
         Key: key,

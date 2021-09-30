@@ -7,6 +7,17 @@ provider:
   lambdaHashingVersion: 20201221
   stage: dev
   region: ap-south-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:ListBucket
+      Resource: "arn:aws:s3:::swiggy-images"
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+        - s3:DeleteObject
+      Resource: "arn:aws:s3:::swiggy-images/*"
 
 functions:
   hello:
@@ -15,8 +26,6 @@ functions:
       - httpApi:
           path: /save
           method: get
-#      - websocket: $connect
-#      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
 #      - sns: greeter-topic
 #      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000

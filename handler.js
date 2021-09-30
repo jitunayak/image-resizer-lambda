@@ -1,6 +1,6 @@
 'use strict';
 
-const { downloadImage, resizeImage } = require("./utils");
+const { downloadImage, resizeImage, saveToS3 } = require("./utils");
 const url = "https://miro.medium.com/max/3200/1*-P0w5Fgk5Ixj_3IEmjAL7g@2x.png"
 const bucket = 'swiggy-images'
 exports.hello = async (event) => {

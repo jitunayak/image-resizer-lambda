@@ -1,11 +1,13 @@
 'use strict';
 
-const { downloadImage, resizeImage, saveToS3 } = require("./utils");
-const url = "https://miro.medium.com/max/3200/1*-P0w5Fgk5Ixj_3IEmjAL7g@2x.png"
+const { downloadImage, resizeImage, saveToS3, getObjectFromS3 } = require("./utils");
 const bucket = 'swiggy-images'
 exports.hello = async (event) => {
+  const imageUrlFromS3 = decodeURIComponent(event.Records[0].s3.object.key.replace(/\+/g, ' '));
 
-  const image = await downloadImage(url)
+  //const image = await downloadImage(url)
+  const image = await getObjectFromS3(imageUrlFromS3)
+  console.log(`Received ${key} from S3 event`)
   const resizedImage = await resizeImage(image, 100, 100)
   const key = await saveToS3(bucket, 'lambda-' + new Date().toISOString(), resizedImage)
   console.log(key)

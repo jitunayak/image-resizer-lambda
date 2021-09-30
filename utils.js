@@ -10,6 +10,11 @@ exports.downloadImage = async (url) => {
     return Buffer.from(res.data, 'binary')
 }
 
+exports.getObjectFromS3 = async (key) => {
+    const image = await s3.getObject({ Bucket: 'swiggy-images', Key: key }).promise();
+    return image;
+}
+
 exports.resizeImage = async (buff, width, height) => {
     return new Promise((resolve, reject) => {
         gm(buff).resize(width, height).noProfile()
